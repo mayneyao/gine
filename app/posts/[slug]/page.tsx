@@ -1,15 +1,24 @@
+import { DisqusComments } from "@/components/comment";
 import { notionPage2html } from "@/lib/notion";
 
 async function Post({ params }: {
   params: { slug: string },
 }) {
   const htmlStr = await notionPage2html(params.slug);
-  return <article
-    className="mx-auto prose prose-slate dark:prose-invert mb-8 p-3 lg:prose-lg max-w-3xl"
-    dangerouslySetInnerHTML={{
-      __html: htmlStr
-    }}>
-  </article>
+  return <div className="mx-auto max-w-3xl">
+    <article
+      className="prose prose-slate dark:prose-invert mb-8 p-3 lg:prose-lg"
+      dangerouslySetInnerHTML={{
+        __html: htmlStr
+      }}>
+    </article>
+    <hr />
+    <DisqusComments post={{
+      id: params.slug,
+      title: params.slug
+    }} />
+  </div>
+
 }
 
 export default Post;

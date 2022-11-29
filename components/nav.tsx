@@ -1,7 +1,7 @@
 'use client';
 
+// TODO: add dark mode
 import { useState } from "react";
-
 
 export const Nav = () => {
   const [isDark, setIsDark] = useState(false);

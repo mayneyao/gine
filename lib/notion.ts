@@ -5,7 +5,7 @@ import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeStringify from 'rehype-stringify'
-import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+import { PageObjectResponse, UserObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 
 
 
@@ -53,6 +53,7 @@ export async function getPostList(postDatabaseId: string) {
   });
   return response.results.map((item) => {
     const entry = Object.entries((item as PageObjectResponse).properties).map(([key, value]) => {
+      // code below is co-authored with Github Copilot
       switch (value.type) {
         case 'title':
           return [key, value.title[0]?.plain_text]
@@ -67,7 +68,7 @@ export async function getPostList(postDatabaseId: string) {
         case 'number':
           return [key, value.number]
         case 'people':
-          return [key, value.people?.map((item) => item.name)]
+          return [key, value.people?.map((item) => (item as UserObjectResponse).name)]
         case 'files':
           return [key, value.files?.map((item) => item.name)]
         case 'checkbox':
@@ -79,19 +80,35 @@ export async function getPostList(postDatabaseId: string) {
         case 'phone_number':
           return [key, value.phone_number]
         case 'formula':
-          return [key, value.formula?.string]
+          switch (value.formula.type) {
+            case 'string':
+              return [key, value.formula.string]
+            case 'number':
+              return [key, value.formula.number]
+            case 'boolean':
+              return [key, value.formula.boolean]
+            case 'date':
+              return [key, value.formula.date?.start]
+          }
         case 'relation':
           return [key, value.relation?.map((item) => item.id)]
         case 'rollup':
-          return [key, value.rollup?.number]
+          switch (value.rollup.type) {
+            case 'number':
+              return [key, value.rollup.number]
+            case 'date':
+              return [key, value.rollup.date?.start]
+            case 'array':
+              return [key, value.rollup.array]
+          }
         case 'created_time':
           return [key, value.created_time]
         case 'created_by':
-          return [key, value.created_by?.name]
+          return [key, (value.created_by as UserObjectResponse).name]
         case 'last_edited_time':
           return [key, value.last_edited_time]
         case 'last_edited_by':
-          return [key, value.last_edited_by?.name]
+          return [key, (value.last_edited_by as UserObjectResponse)?.name]
         default:
           return [key, value]
       }

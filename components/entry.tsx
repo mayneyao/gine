@@ -1,7 +1,8 @@
 import Link from "next/link"
 import Image from 'next/image'
+import config from '@/gine.config';
 
-export const Header = () => {
+export const Entry = () => {
   return <div className="max-w-screen-sm h-full px-6 mx-auto flex flex-col items-center justify-center">
     <Link href="/">
       <Image
@@ -11,7 +12,7 @@ export const Header = () => {
         height={48}
       />
     </Link>
-    <span className="p-2">{"Mayne's Blog"}</span>
+    <span className="p-2">{config.site.name}</span>
     <span>
       <Link href="/posts">posts</Link>
     </span>
