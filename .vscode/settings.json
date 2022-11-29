@@ -1,0 +1,7 @@
+{
+  "typescript.tsdk": "node_modules\\.pnpm\\registry.npmmirror.com+typescript@4.9.3\\node_modules\\typescript\\lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "cSpell.words": [
+    "Mayne's"
+  ]
+}
