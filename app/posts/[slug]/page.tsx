@@ -1,6 +1,8 @@
 import { DisqusComments } from "@/components/comment";
 import { notionPage2html } from "@/lib/notion";
 
+export const revalidate = 60 * 60 * 24; // 24 hours
+
 async function Post({ params }: {
   params: { slug: string },
 }) {
