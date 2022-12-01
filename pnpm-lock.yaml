@@ -3,6 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@notionhq/client': ^2.2.2
   '@tailwindcss/typography': ^0.5.8
+  '@types/markdown-it': ^12.2.3
   '@types/node': 18.11.9
   '@types/react': 18.0.25
   '@types/react-dom': 18.0.9
@@ -10,7 +11,10 @@ specifiers:
   disqus-react: ^1.1.5
   eslint: 8.28.0
   eslint-config-next: 13.0.5
+  markdown-it: ^13.0.1
+  markdown-it-highlightjs: ^4.0.1
   next: 13.0.5
+  next-themes: ^0.2.1
   notion-to-md: ^2.5.5
   postcss: ^8.4.19
   react: 18.2.0
@@ -33,7 +37,10 @@ dependencies:
   disqus-react: registry.npmmirror.com/disqus-react/1.1.5_react-dom@18.2.0+react@18.2.0
   eslint: registry.npmmirror.com/eslint/8.28.0
   eslint-config-next: registry.npmmirror.com/eslint-config-next/13.0.5_eslint@8.28.0+typescript@4.9.3
+  markdown-it: registry.npmmirror.com/markdown-it/13.0.1
+  markdown-it-highlightjs: registry.npmmirror.com/markdown-it-highlightjs/4.0.1
   next: registry.npmmirror.com/next/13.0.5_react-dom@18.2.0+react@18.2.0
+  next-themes: registry.npmmirror.com/next-themes/0.2.1_fa2952ccddfcc2bb62e259556553b777
   notion-to-md: registry.npmmirror.com/notion-to-md/2.5.5
   postcss: registry.npmmirror.com/postcss/8.4.19
   react: registry.npmmirror.com/react/18.2.0
@@ -45,6 +52,9 @@ dependencies:
   tailwindcss: registry.npmmirror.com/tailwindcss/3.2.4
   typescript: registry.npmmirror.com/typescript/4.9.3
   unified: registry.npmmirror.com/unified/10.1.2
+
+devDependencies:
+  '@types/markdown-it': registry.npmmirror.com/@types/markdown-it/12.2.3
 
 packages:
 
@@ -360,6 +370,21 @@ packages:
     version: 0.0.29
     dev: false
 
+  registry.npmmirror.com/@types/linkify-it/3.0.2:
+    resolution: {integrity: sha512-HZQYqbiFVWufzCwexrvh694SOim8z2d+xJl5UNamcvQFejLY/2YUtzXHYi3cHdI7PMlS8ejH2slRAOJQ32aNbA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/linkify-it/-/linkify-it-3.0.2.tgz}
+    name: '@types/linkify-it'
+    version: 3.0.2
+    dev: true
+
+  registry.npmmirror.com/@types/markdown-it/12.2.3:
+    resolution: {integrity: sha512-GKMHFfv3458yYy+v/N8gjufHO6MSZKCOXpZc5GXIWWy8uldwfmPn98vp81gZ5f9SVw8YYBctgfJ22a2d7AOMeQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/markdown-it/-/markdown-it-12.2.3.tgz}
+    name: '@types/markdown-it'
+    version: 12.2.3
+    dependencies:
+      '@types/linkify-it': registry.npmmirror.com/@types/linkify-it/3.0.2
+      '@types/mdurl': registry.npmmirror.com/@types/mdurl/1.0.2
+    dev: true
+
   registry.npmmirror.com/@types/mdast/3.0.10:
     resolution: {integrity: sha512-W864tg/Osz1+9f4lrGTZpCSO5/z4608eUp19tbozkq2HJK6i3z1kT0H9tlADXuYIb1YYOBByU4Jsqkk75q48qA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/mdast/-/mdast-3.0.10.tgz}
     name: '@types/mdast'
@@ -367,6 +392,12 @@ packages:
     dependencies:
       '@types/unist': registry.npmmirror.com/@types/unist/2.0.6
     dev: false
+
+  registry.npmmirror.com/@types/mdurl/1.0.2:
+    resolution: {integrity: sha512-eC4U9MlIcu2q0KQmXszyn5Akca/0jrQmwDRgpAMJai7qBWq4amIQhZyNau4VYGtCeALvW1/NtjzJJ567aZxfKA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/mdurl/-/mdurl-1.0.2.tgz}
+    name: '@types/mdurl'
+    version: 1.0.2
+    dev: true
 
   registry.npmmirror.com/@types/ms/0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/ms/-/ms-0.7.31.tgz}
@@ -1084,6 +1115,13 @@ packages:
     dependencies:
       graceful-fs: registry.npmmirror.com/graceful-fs/4.2.10
       tapable: registry.npmmirror.com/tapable/2.2.1
+    dev: false
+
+  registry.npmmirror.com/entities/3.0.1:
+    resolution: {integrity: sha512-WiyBqoomrwMdFG1e0kqvASYfnlb0lp8M5o5Fw2OFq1hNZxxcNk8Ik0Xm7LxzBhuidnZB/UtBqVCgUz3kBOP51Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/entities/-/entities-3.0.1.tgz}
+    name: entities
+    version: 3.0.1
+    engines: {node: '>=0.12'}
     dev: false
 
   registry.npmmirror.com/es-abstract/1.20.4:
@@ -1806,6 +1844,13 @@ packages:
     version: 2.0.0
     dev: false
 
+  registry.npmmirror.com/highlight.js/11.7.0:
+    resolution: {integrity: sha512-1rRqesRFhMO/PRF+G86evnyJkCgaZFOI+Z6kdj15TA18funfoqJXvgPCLSf0SWq3SRfg1j3HlDs8o4s3EGq1oQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/highlight.js/-/highlight.js-11.7.0.tgz}
+    name: highlight.js
+    version: 11.7.0
+    engines: {node: '>=12.0.0'}
+    dev: false
+
   registry.npmmirror.com/html-void-elements/2.0.1:
     resolution: {integrity: sha512-0quDb7s97CfemeJAnW9wC0hw78MtW7NU3hqtCD75g2vFlDLt36llsYD7uB7SUzojLMP24N5IatXf7ylGXiGG9A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/html-void-elements/-/html-void-elements-2.0.1.tgz}
     name: html-void-elements
@@ -2130,6 +2175,14 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
+  registry.npmmirror.com/linkify-it/4.0.1:
+    resolution: {integrity: sha512-C7bfi1UZmoj8+PQx22XyeXCuBlokoyWQL5pWSP+EI6nzRylyThouddufc2c1NDIcP9k5agmN9fLpA7VNJfIiqw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/linkify-it/-/linkify-it-4.0.1.tgz}
+    name: linkify-it
+    version: 4.0.1
+    dependencies:
+      uc.micro: registry.npmmirror.com/uc.micro/1.0.6
+    dev: false
+
   registry.npmmirror.com/locate-path/6.0.0:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/locate-path/-/locate-path-6.0.0.tgz}
     name: locate-path
@@ -2173,6 +2226,27 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: registry.npmmirror.com/yallist/4.0.0
+    dev: false
+
+  registry.npmmirror.com/markdown-it-highlightjs/4.0.1:
+    resolution: {integrity: sha512-EPXwFEN6P5nqR3G4KjT20r20xbGYKMMA/360hhSYFmeoGXTE6hsLtJAiB/8ID8slVH4CWHHEL7GX0YenyIstVQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/markdown-it-highlightjs/-/markdown-it-highlightjs-4.0.1.tgz}
+    name: markdown-it-highlightjs
+    version: 4.0.1
+    dependencies:
+      highlight.js: registry.npmmirror.com/highlight.js/11.7.0
+    dev: false
+
+  registry.npmmirror.com/markdown-it/13.0.1:
+    resolution: {integrity: sha512-lTlxriVoy2criHP0JKRhO2VDG9c2ypWCsT237eDiLqi09rmbKoUetyGHq2uOIRoRS//kfoJckS0eUzzkDR+k2Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/markdown-it/-/markdown-it-13.0.1.tgz}
+    name: markdown-it
+    version: 13.0.1
+    hasBin: true
+    dependencies:
+      argparse: registry.npmmirror.com/argparse/2.0.1
+      entities: registry.npmmirror.com/entities/3.0.1
+      linkify-it: registry.npmmirror.com/linkify-it/4.0.1
+      mdurl: registry.npmmirror.com/mdurl/1.0.1
+      uc.micro: registry.npmmirror.com/uc.micro/1.0.6
     dev: false
 
   registry.npmmirror.com/markdown-table/2.0.0:
@@ -2234,6 +2308,12 @@ packages:
     resolution: {integrity: sha512-n4Vypz/DZgwo0iMHLQL49dJzlp7YtAJP+N07MZHpjPf/5XJuHUWstviF4Mn2jEiR/GNmtnRRqnwsXExk3igfFA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/mdast-util-to-string/-/mdast-util-to-string-3.1.0.tgz}
     name: mdast-util-to-string
     version: 3.1.0
+    dev: false
+
+  registry.npmmirror.com/mdurl/1.0.1:
+    resolution: {integrity: sha512-/sKlQJCBYVY9Ers9hqzKou4H6V5UWc/M59TH2dvkt+84itfnq7uFOMLpOiOS4ujvHP4etln18fmIxA5R5fll0g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/mdurl/-/mdurl-1.0.1.tgz}
+    name: mdurl
+    version: 1.0.1
     dev: false
 
   registry.npmmirror.com/merge2/1.4.1:
@@ -2538,6 +2618,21 @@ packages:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/natural-compare/-/natural-compare-1.4.0.tgz}
     name: natural-compare
     version: 1.4.0
+    dev: false
+
+  registry.npmmirror.com/next-themes/0.2.1_fa2952ccddfcc2bb62e259556553b777:
+    resolution: {integrity: sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/next-themes/-/next-themes-0.2.1.tgz}
+    id: registry.npmmirror.com/next-themes/0.2.1
+    name: next-themes
+    version: 0.2.1
+    peerDependencies:
+      next: '*'
+      react: '*'
+      react-dom: '*'
+    dependencies:
+      next: registry.npmmirror.com/next/13.0.5_react-dom@18.2.0+react@18.2.0
+      react: registry.npmmirror.com/react/18.2.0
+      react-dom: registry.npmmirror.com/react-dom/18.2.0_react@18.2.0
     dev: false
 
   registry.npmmirror.com/next/13.0.5_react-dom@18.2.0+react@18.2.0:
@@ -3500,6 +3595,12 @@ packages:
     version: 4.9.3
     engines: {node: '>=4.2.0'}
     hasBin: true
+    dev: false
+
+  registry.npmmirror.com/uc.micro/1.0.6:
+    resolution: {integrity: sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/uc.micro/-/uc.micro-1.0.6.tgz}
+    name: uc.micro
+    version: 1.0.6
     dev: false
 
   registry.npmmirror.com/unbox-primitive/1.0.2:

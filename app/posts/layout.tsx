@@ -4,7 +4,7 @@ export default function PostLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <div>
+  return <div className="mx-auto max-w-2xl">
     {children}
   </div>
 }

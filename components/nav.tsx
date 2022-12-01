@@ -1,20 +1,14 @@
-'use client';
+import Link from "next/link"
+import { ThemeSwitcher } from "./ThemeSwitch"
 
-// TODO: add dark mode
-import { useState } from "react";
-
-export const Nav = () => {
-  const [isDark, setIsDark] = useState(false);
-  const toggleDark = () => {
-    setIsDark(!isDark);
-    const htmlElement = document.querySelector("html");
-    console.log(htmlElement)
-    htmlElement?.setAttribute("data-theme", isDark ? "light" : "dark");
-  };
-
-  return <div className="flex justify-items-end">
-    <span onClick={() => { toggleDark }} className="cursor-pointer">
-      {isDark ? '🌙' : '🌞'}
-    </span>
-  </div>
+export const Nav = ({ backTo = '/' }: {
+  backTo?: string
+}) => {
+  return <nav className="mx-auto max-w-2xl">
+    <div className='flex items-center justify-between px-3 py-3'>
+      <Link href={backTo} className='inline-block'>👈back</Link>
+      <ThemeSwitcher />
+    </div>
+    <hr />
+  </nav>
 }

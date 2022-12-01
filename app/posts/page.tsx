@@ -1,3 +1,4 @@
+import { Nav } from '@/components/nav';
 import { getPostList } from '@/lib/notion';
 import Link from 'next/link';
 
@@ -5,11 +6,8 @@ const postDatabaseId = process.env.NOTION_POST_DATABASE_ID;
 
 export default async function PostList() {
   const posts = await getPostList(postDatabaseId!);
-  return <div>
-    <nav className="mx-auto max-w-3xl">
-      <Link href="/" className='inline-block p-3'>👈back</Link>
-      <hr />
-    </nav>
+  return <>
+    <Nav />
     <div className='mx-auto prose lg:prose-xl'>
       {
         posts.map(post => (
@@ -20,7 +18,10 @@ export default async function PostList() {
             <span className="text-gray-400 mr-[2rem]">
               {post.properties.public_date}
             </span>
-            <Link href={`/posts/${post.id.split('-').join('')}`}>
+            <Link
+              className='dark:text-gray-200'
+              href={`/posts/${post.id.split('-').join('')}`}
+            >
               {
                 post.properties.name
               }
@@ -30,5 +31,5 @@ export default async function PostList() {
         ))
       }
     </div>
-  </div>
+  </>
 }

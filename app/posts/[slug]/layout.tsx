@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { Nav } from '@/components/nav'
 
 
 export default function PostLayout({
@@ -7,10 +7,7 @@ export default function PostLayout({
   children: React.ReactNode
 }) {
   return <>
-    <nav className="mx-auto max-w-3xl">
-      <Link href="/posts" className='inline-block p-3'>👈back</Link>
-      <hr />
-    </nav>
+    <Nav backTo='/posts' />
     {children}
   </>
 }

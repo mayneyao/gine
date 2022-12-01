@@ -18,7 +18,9 @@ it's very simple, and you can easily customize it to your needs.
 ## TODO
 
 - [x] add comment
-- [ ] fix bookmark rendering
+- [x] code highlight
+- [x] fix bookmark rendering(render as link)
+- [x] dark mode
 - [ ] custom post slug
 - [ ] sitemap
 - [ ] rss feed

@@ -1,11 +1,7 @@
 import { Client } from '@notionhq/client';
-import { NotionToMarkdown } from 'notion-to-md';
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkRehype from 'remark-rehype'
-import rehypeSanitize from 'rehype-sanitize'
-import rehypeStringify from 'rehype-stringify'
 import { PageObjectResponse, UserObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+import { NotionToMarkdown } from 'notion-to-md';
+import { md } from './markdown';
 
 
 
@@ -15,18 +11,15 @@ const notion = new Client({
 
 const n2m = new NotionToMarkdown({ notionClient: notion });
 
-const MDProcess = unified()
-  .use(remarkParse)
-  .use(remarkRehype)
-  .use(rehypeSanitize)
-  .use(rehypeStringify)
-  .process
+n2m.setCustomTransformer('bookmark', async (block: any) => {
+  return `[${block.bookmark.url}](${block.bookmark.url})`;
+})
+
 
 export async function notionPage2html(slug: string) {
   const mdblocks = await n2m.pageToMarkdown(slug);
   const mdString = n2m.toMarkdownString(mdblocks);
-  const file = await MDProcess(mdString)
-  return String(file)
+  return md.render(mdString);
 }
 
 
