@@ -15,12 +15,14 @@ it's very simple, and you can easily customize it to your needs.
 
 ## How to use
 
-## TODO
+## Features
 
-- [x] add comment
+- [x] comment
 - [x] code highlight
-- [x] fix bookmark rendering(render as link)
 - [x] dark mode
+- [x] toc
+- [ ] open graph
+- [ ] SEO optimization
 - [ ] custom post slug
 - [ ] sitemap
 - [ ] rss feed

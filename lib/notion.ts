@@ -4,7 +4,6 @@ import { NotionToMarkdown } from 'notion-to-md';
 import { md } from './markdown';
 
 
-
 const notion = new Client({
   auth: process.env.NOTION_API_TOKEN,
 });
@@ -13,6 +12,10 @@ const n2m = new NotionToMarkdown({ notionClient: notion });
 
 n2m.setCustomTransformer('bookmark', async (block: any) => {
   return `[${block.bookmark.url}](${block.bookmark.url})`;
+})
+// { type: 'table_of_contents', parent: '', children: [] },
+n2m.setCustomTransformer('table_of_contents', async (block: any) => {
+  return '[[toc]]';
 })
 
 
@@ -30,7 +33,7 @@ export async function getPostList(postDatabaseId: string) {
       and: [
         {
           property: 'status',
-          select: {
+          status: {
             equals: 'published',
           },
         },
@@ -58,6 +61,8 @@ export async function getPostList(postDatabaseId: string) {
           return [key, value.select?.name]
         case 'multi_select':
           return [key, value.multi_select?.map((item) => item.name)]
+        case 'status':
+          return [key, value.status]
         case 'number':
           return [key, value.number]
         case 'people':
