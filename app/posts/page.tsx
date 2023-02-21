@@ -15,7 +15,7 @@ export default async function PostList() {
             key={post.id}
             className="px-4 py-4"
           >
-            <span className="text-gray-400 mr-[2rem]">
+            <span className="text-gray-400 mr-[2rem] font-mono">
               {post.properties.public_date}
             </span>
             <Link
