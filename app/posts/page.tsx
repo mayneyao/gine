@@ -4,6 +4,13 @@ import Link from 'next/link';
 
 const postDatabaseId = process.env.NOTION_POST_DATABASE_ID;
 
+// now working for now
+// export const preload = () => {
+//   // void evaluates the given expression and returns undefined
+//   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void
+//   void getPostList(postDatabaseId!);
+// }
+
 export default async function PostList() {
   const posts = await getPostList(postDatabaseId!);
   return <>
