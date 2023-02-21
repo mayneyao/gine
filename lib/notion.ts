@@ -34,8 +34,8 @@ const splitSlug = (slug: string) => {
 
 const makeSlugRight = (slug: string) => {
   // 567e6140-4a93-43a3-9acd-fcfeb359eb89 to 567e61404a9343a39acdfcfeb359eb89
-  if (slug.length === 32) return slug;
-  return splitSlug(slug);
+  if (slug.length === 32) return splitSlug(slug);
+  return slug;
 }
 
 export const getPageMeta = cache(async (slug: string) => {
