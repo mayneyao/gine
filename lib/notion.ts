@@ -31,6 +31,12 @@ const splitSlug = (slug: string) => {
   return slug;
 }
 
+const makeSlugRight = (slug: string) => {
+  // 567e6140-4a93-43a3-9acd-fcfeb359eb89 to 567e61404a9343a39acdfcfeb359eb89
+  if (slug.length === 32) return slug;
+  return splitSlug(slug);
+}
+
 export async function getPageMeta(slug: string) {
   const response = await notion.pages.retrieve({
     page_id: splitSlug(slug)
@@ -109,7 +115,7 @@ const properties2Object = (properties: PageObjectResponse['properties']) => {
 
 export async function getPostList(postDatabaseId: string) {
   const response = await notion.databases.query({
-    database_id: postDatabaseId,
+    database_id: makeSlugRight(postDatabaseId),
     filter: {
       and: [
         {
