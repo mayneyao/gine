@@ -17,6 +17,42 @@ export const revalidate = 86400;
 //   void notionPage2html(slug);
 // }
 
+// or Dynamic metadata
+export async function generateMetadata({ params }: IPostProps) {
+  const meta = await getPageMeta(params.slug);
+
+  const title = `${meta.name} | gine.me`;
+  const url = `https://gine.me/posts/${params.slug}`;
+  const description = meta.desc;
+  const image = `https://gine.me/og?title=${title}&desc=${description}`;
+  return {
+    title,
+    description,
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      creator: "@mayneyao",
+      images: [image],
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: "Mayne's Blog",
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+        },
+      ],
+      locale: "zh-Hans_CN",
+      type: "article",
+    },
+  };
+}
+
 export default async function Post({ params }: IPostProps) {
   const htmlStr = await notionPage2html(params.slug);
   const meta = await getPageMeta(params.slug);
