@@ -9,7 +9,7 @@ async function Post({ params }: {
 }) {
   const htmlStr = await notionPage2html(params.slug);
   const meta = await getPageMeta(params.slug);
-  return <div className="mx-auto max-w-2xl">
+  return <div className="mx-auto">
     <div className="mb-4 p-3">
       <h1 className="text-3xl font-bold pb-3">
         {meta.name}
