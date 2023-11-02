@@ -21,11 +21,11 @@ it's very simple, and you can easily customize it to your needs.
 - [x] code highlight
 - [x] dark mode
 - [x] toc
-- [ ] open graph
+- [x] open graph
 - [ ] SEO optimization
 - [ ] custom post slug
 - [ ] sitemap
-- [ ] rss feed
+- [x] rss feed
 - [ ] generate post interface from notion database for better type safety
 
 ## FAQ

@@ -6,7 +6,8 @@ export default async function Head({ params }: { params: { slug: string } }) {
   const title = `${meta.name} | gine.me`;
   const url = `https://gine.me/posts/${params.slug}`;
   const description = meta.desc;
-  const image = meta.image || "https://gine.me/default-og-image.jpg";
+  // const image = meta.image || "https://gine.me/default-og-image.jpg";
+  const image = `https://gine.me/og?title=${title}&desc=${description}`;
   return (
     <>
       <title>{title}</title>
