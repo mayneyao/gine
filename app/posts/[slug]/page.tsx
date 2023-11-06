@@ -21,10 +21,11 @@ export const revalidate = 86400;
 export async function generateMetadata({ params }: IPostProps) {
   const meta = await getPageMeta(params.slug);
 
-  const title = `${meta.name} | gine.me`;
+  const title = `${meta.name} | Mayne's Blog | gine.me`;
   const url = `https://gine.me/posts/${params.slug}`;
   const description = meta.desc;
-  const image = `https://gine.me/og?title=${title}&desc=${description}`;
+  // const image = `https://gine.me/og?title=${title}&desc=${description}`;
+  const image = meta.cover || `https://gine.me/default-og-image.jpg`;
   return {
     title,
     description,
