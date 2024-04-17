@@ -1,7 +1,6 @@
-import { getPostList } from "@/lib/notion";
+import { dataSource } from "@/lib/data-source";
 import { Feed } from "feed";
 
-const postDatabaseId = process.env.NOTION_POST_DATABASE_ID;
 const feed = new Feed({
   title: "Mayne's Blog",
   description: "Mayne's Blog RSS Feed",
@@ -25,17 +24,17 @@ const feed = new Feed({
 });
 
 export async function GET() {
-  const posts = await getPostList(postDatabaseId!);
+  const posts = await dataSource.getPostList();
 
   posts.forEach((post) => {
     const id = post.id.split("-").join("");
     feed.addItem({
-      title: post.properties.name,
+      title: post.name,
       id: id,
       link: `https://gine.me/posts/${id}`,
-      description: post.properties.desc,
+      description: post.desc,
       content: "",
-      date: new Date(post.properties.public_date),
+      date: new Date(post.public_date),
     });
   });
   return new Response(feed.rss2(), {

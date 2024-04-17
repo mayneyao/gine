@@ -4,8 +4,8 @@ import {
   UserObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 import { NotionToMarkdown } from "notion-to-md";
-import { md } from "./markdown";
-import { cache } from "react";
+import { BaseDataSource } from "./base";
+import { md } from "../markdown";
 
 const notion = new Client({
   auth: process.env.NOTION_API_TOKEN,
@@ -27,12 +27,6 @@ n2m.setCustomTransformer("image", async (block: any) => {
   return `![${blockId}](${url})`;
 });
 
-export const notionPage2html = cache(async (slug: string) => {
-  const mdblocks = await n2m.pageToMarkdown(slug);
-  const mdString = n2m.toMarkdownString(mdblocks);
-  return md.render(mdString);
-});
-
 const splitSlug = (slug: string) => {
   // 567e61404a9343a39acdfcfeb359eb89 to 567e6140-4a93-43a3-9acd-fcfeb359eb89
   slug = slug.replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, "$1-$2-$3-$4-$5");
@@ -44,13 +38,6 @@ const makeSlugRight = (slug: string) => {
   if (slug.length === 32) return splitSlug(slug);
   return slug;
 };
-
-export const getPageMeta = cache(async (slug: string) => {
-  const response = await notion.pages.retrieve({
-    page_id: splitSlug(slug),
-  });
-  return properties2Object((response as PageObjectResponse).properties);
-});
 
 const properties2Object = (properties: PageObjectResponse["properties"]) => {
   const entry = Object.entries(properties).map(([key, value]) => {
@@ -122,32 +109,49 @@ const properties2Object = (properties: PageObjectResponse["properties"]) => {
   return Object.fromEntries(entry);
 };
 
-// cache next function
-export const getPostList = cache(async (postDatabaseId: string) => {
-  const response = await notion.databases.query({
-    database_id: makeSlugRight(postDatabaseId),
-    filter: {
-      and: [
-        {
-          property: "status",
-          status: {
-            equals: "published",
+export class NotionDataSource implements BaseDataSource {
+  constructor(private databaseId: string) {
+    this.databaseId = databaseId;
+  }
+  async getHtml(slug: string) {
+    const mdblocks = await n2m.pageToMarkdown(slug);
+    const mdString = n2m.toMarkdownString(mdblocks);
+    return md.render(mdString);
+  }
+
+  async getMeta(slug: string) {
+    const response = await notion.pages.retrieve({
+      page_id: splitSlug(slug),
+    });
+    return properties2Object((response as PageObjectResponse).properties);
+  }
+
+  async getPostList() {
+    const response = await notion.databases.query({
+      database_id: makeSlugRight(this.databaseId),
+      filter: {
+        and: [
+          {
+            property: "status",
+            status: {
+              equals: "published",
+            },
           },
-        },
-        {
-          property: "keep",
-          checkbox: {
-            equals: true,
+          {
+            property: "keep",
+            checkbox: {
+              equals: true,
+            },
           },
-        },
-      ],
-    },
-    sorts: [],
-  });
-  return response.results.map((item) => {
-    return {
-      id: item.id,
-      properties: properties2Object((item as PageObjectResponse).properties),
-    };
-  });
-});
+        ],
+      },
+      sorts: [],
+    });
+    return response.results.map((item) => {
+      return {
+        id: item.id,
+        ...properties2Object((item as PageObjectResponse).properties),
+      };
+    });
+  }
+}
