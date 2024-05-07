@@ -1,6 +1,6 @@
 import { DisqusComments } from "@/components/comment";
-import { getPageMeta, notionPage2html } from "@/lib/notion";
 import "./code.css";
+import { dataSource } from "@/lib/data-source";
 
 type IPostProps = {
   params: {
@@ -19,13 +19,13 @@ export const revalidate = 86400;
 
 // or Dynamic metadata
 export async function generateMetadata({ params }: IPostProps) {
-  const meta = await getPageMeta(params.slug);
+  const meta = await dataSource.getMeta(params.slug);
 
-  const title = `${meta.name} | Mayne's Blog | gine.me`;
+  const title = `${meta?.name} | Mayne's Blog | gine.me`;
   const url = `https://gine.me/posts/${params.slug}`;
-  const description = meta.desc;
+  const description = meta?.desc;
   // const image = `https://gine.me/og?title=${title}&desc=${description}`;
-  const image = meta.cover || `https://gine.me/default-og-image.jpg`;
+  const image = meta?.cover || `https://gine.me/default-og-image.jpg`;
   return {
     title,
     description,
@@ -55,15 +55,15 @@ export async function generateMetadata({ params }: IPostProps) {
 }
 
 export default async function Post({ params }: IPostProps) {
-  const htmlStr = await notionPage2html(params.slug);
-  const meta = await getPageMeta(params.slug);
+  const htmlStr = await dataSource.getHtml(params.slug);
+  const meta = await dataSource.getMeta(params.slug);
   return (
     <div className="mx-auto prose prose-slate dark:prose-invert mb-8 p-3">
       <div className="mb-4 mx-auto">
-        <h1 className="text-3xl font-bold pb-3">{meta.name}</h1>
+        <h1 className="text-3xl font-bold pb-3">{meta?.name}</h1>
         <div className="flex flex-wrap">
-          <span className="text-gray-400 mr-[2rem]">{meta.public_date}</span>
-          {meta.tags.map((tag: string) => (
+          <span className="text-gray-400 mr-[2rem]">{meta?.public_date}</span>
+          {meta?.tags.map((tag: string) => (
             <span className="text-gray-400 mr-[2rem]" key={tag}>
               #{tag}
             </span>

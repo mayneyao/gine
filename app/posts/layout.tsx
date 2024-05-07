@@ -1,21 +1,17 @@
-import { getPostList } from "@/lib/notion";
-
-const postDatabaseId = process.env.NOTION_POST_DATABASE_ID;
+import { dataSource } from "@/lib/data-source";
 
 export async function generateStaticParams() {
-  const posts = await getPostList(postDatabaseId!);
+  const posts = await dataSource.getPostList();
 
   return posts.map((post) => ({
-    slug: post.id.split('-').join(''),
+    slug: post.id.split("-").join(""),
   }));
 }
 
 export default function PostLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  return <div className="mx-auto">
-    {children}
-  </div>
+  return <div className="mx-auto">{children}</div>;
 }
