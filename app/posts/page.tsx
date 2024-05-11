@@ -8,6 +8,7 @@ import Link from "next/link";
 //   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void
 //   void getPostList(postDatabaseId!);
 // }
+export const dynamic = "force-dynamic";
 
 export default async function PostList() {
   const posts = await dataSource.getPostList();
