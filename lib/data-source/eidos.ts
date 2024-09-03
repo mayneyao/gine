@@ -33,7 +33,13 @@ export class EidosDataSource implements BaseDataSource {
         return {
           id: item._id,
           ...item,
+          public_date: item.public_date.split("T")[0],
         };
+      })
+      .sort((a: any, b: any) => {
+        return (
+          new Date(b.public_date).getTime() - new Date(a.public_date).getTime()
+        );
       });
   }
 }
