@@ -37,7 +37,14 @@ export async function GET() {
       date: new Date(post.public_date),
     });
   });
-  return new Response(feed.rss2(), {
+  let rss2 = feed.rss2();
+
+  const followChallenge = `<follow_challenge>
+    <feedId>53908061985105945</feedId>
+    <userId>41485340109788160</userId>
+  </follow_challenge>`;
+  rss2 = rss2.replace("<channel>", "<channel>" + followChallenge);
+  return new Response(rss2, {
     headers: {
       "content-type": "application/xml;charset=UTF-8",
     },
