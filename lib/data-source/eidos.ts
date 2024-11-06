@@ -11,7 +11,8 @@ export class EidosDataSource implements BaseDataSource {
   async getHtml(slug: string): Promise<string> {
     const response = await fetch(`https://eidos.ink/${this.space}/md-${slug}`);
     const markdown = await response.text();
-    return md.render(markdown);
+    const contentWithToc = `[[toc]]\n\n${markdown}`;
+    return md.render(contentWithToc);
   }
 
   async getMeta(slug: string): Promise<IPost | undefined> {
