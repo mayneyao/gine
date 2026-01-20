@@ -1,43 +1,52 @@
 ---
 export const prerender = true;
-import { getPosts } from '../../lib/eidos';
-import BlogPost from '../../layouts/BlogPost.astro';
-import { Marked } from 'marked';
-import { createHighlighter } from 'shiki';
+import { getPosts } from "../../lib/eidos";
+import BlogPost from "../../layouts/BlogPost.astro";
+import { Marked } from "marked";
+import { createHighlighter } from "shiki";
 
 const highlighter = await createHighlighter({
-	themes: ['github-dark'],
-	langs: ['javascript', 'typescript', 'html', 'css', 'python', 'bash', 'json', 'markdown'],
+  themes: ["github-dark"],
+  langs: [
+    "javascript",
+    "typescript",
+    "html",
+    "css",
+    "python",
+    "bash",
+    "json",
+    "markdown",
+  ],
 });
 
 const marked = new Marked({
-	async: true,
-	renderer: {
-		code({ text, lang }) {
-			try {
-				return highlighter.codeToHtml(text, {
-					lang: lang || 'text',
-					theme: 'github-dark',
-				});
-			} catch (e) {
-				return `<pre><code>${text}</code></pre>`;
-			}
-		},
-	},
+  async: true,
+  renderer: {
+    code({ text, lang }) {
+      try {
+        return highlighter.codeToHtml(text, {
+          lang: lang || "text",
+          theme: "github-dark",
+        });
+      } catch (e) {
+        return `<pre><code>${text}</code></pre>`;
+      }
+    },
+  },
 });
 
 export async function getStaticPaths() {
-	const posts = await getPosts();
-	return posts.map((post) => ({
-		params: { slug: post.slug },
-		props: post,
-	}));
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
 }
 
 const post = Astro.props;
-const content = await marked.parse(post.content || '');
+const content = await marked.parse(post.content || "");
 ---
 
 <BlogPost {...post}>
-	{post.content && <div set:html={marked.parse(post.content)} />}
+  {content && <div set:html={content} />}
 </BlogPost>

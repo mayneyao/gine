@@ -16,9 +16,27 @@ function formatDate(date: Date | undefined) {
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<script is:inline>
+			const theme = (() => {
+				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+					return localStorage.getItem('theme');
+				}
+				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+					return 'dark';
+				}
+				return 'light';
+			})();
+		
+			if (theme === 'light') {
+				document.documentElement.setAttribute('data-theme', 'light');
+			} else {
+				document.documentElement.setAttribute('data-theme', 'dark');
+			}
+		</script>
 		<style>
 			body {
-				background: #fff;
+				background: var(--bg);
+				color: var(--text);
 			}
 			main {
 				max-width: 800px;
@@ -34,12 +52,25 @@ function formatDate(date: Date | undefined) {
 				align-items: center;
 			}
 			.back-link {
-				color: #333;
+				color: var(--text);
 				text-decoration: none;
 				font-size: 18px;
 			}
-			.emoji {
+			.emoji-toggle {
+				background: none;
+				border: none;
+				cursor: pointer;
+				padding: 0;
 				font-size: 24px;
+				line-height: 1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				transition: transform 0.2s;
+				color: var(--text);
+			}
+			.emoji-toggle:hover {
+				transform: scale(1.1);
 			}
 			ul {
 				list-style: none;
@@ -60,16 +91,16 @@ function formatDate(date: Date | undefined) {
 				font-size: 1rem;
 			}
 			.title {
-				color: #333;
+				color: var(--text);
 				text-decoration: none;
 				font-size: 1.1rem;
 				font-weight: 500;
-				border-bottom: 1.5px solid #333;
+				border-bottom: 1.5px solid var(--text);
 				padding-bottom: 1px;
 			}
 			.title:hover {
-				color: #666;
-				border-color: #666;
+				color: var(--gray);
+				border-color: var(--gray);
 			}
 			@media (max-width: 600px) {
 				main {
@@ -96,8 +127,31 @@ function formatDate(date: Date | undefined) {
 	<body>
 		<div class="header">
 			<a href="/" class="back-link">👈back</a>
-			<span class="emoji">😉</span>
+			<button id="theme-toggle" class="emoji-toggle" aria-label="Toggle theme">
+				<span id="theme-emoji">😉</span>
+			</button>
 		</div>
+		<script>
+			const themeToggle = document.getElementById('theme-toggle');
+			const themeEmoji = document.getElementById('theme-emoji');
+
+			const updateEmoji = (theme: string | null) => {
+				if (themeEmoji) {
+					themeEmoji.textContent = theme === 'dark' ? '🌙' : '☀️';
+				}
+			};
+
+			updateEmoji(document.documentElement.getAttribute('data-theme'));
+
+			themeToggle?.addEventListener('click', () => {
+				const currentTheme = document.documentElement.getAttribute('data-theme');
+				const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+				
+				document.documentElement.setAttribute('data-theme', newTheme);
+				localStorage.setItem('theme', newTheme);
+				updateEmoji(newTheme);
+			});
+		</script>
 		<main>
 			<section>
 				<ul>
