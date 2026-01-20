@@ -3,6 +3,7 @@
   "name": "gine",
   "compatibility_date": "2025-01-01",
   "compatibility_flags": ["nodejs_compat"],
+  "pages_build_output_dir": "./dist",
 
   // Environment variables - these can be overridden via `wrangler secret put` or in dashboard
   "vars": {

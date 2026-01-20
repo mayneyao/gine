@@ -2,52 +2,90 @@
 import { getPostBySlug } from "../../lib/eidos";
 import BlogPost from "../../layouts/BlogPost.astro";
 import { Marked } from "marked";
-import { createHighlighter } from "shiki";
-
-const highlighter = await createHighlighter({
-  themes: ["github-dark"],
-  langs: [
-    "javascript",
-    "typescript",
-    "html",
-    "css",
-    "python",
-    "bash",
-    "json",
-    "markdown",
-  ],
-});
-
-const marked = new Marked({
-  async: true,
-  renderer: {
-    code({ text, lang }) {
-      try {
-        return highlighter.codeToHtml(text, {
-          lang: lang || "text",
-          theme: "github-dark",
-        });
-      } catch (e) {
-        return `<pre><code>${text}</code></pre>`;
-      }
-    },
-  },
-});
 
 const { slug } = Astro.params;
+
 if (!slug) {
   return Astro.redirect("/404");
 }
 
-const post = await getPostBySlug(slug);
+let post;
+try {
+  post = await getPostBySlug(slug);
+} catch (e) {
+  console.error(`[PostDetail] Error fetching post:`, e);
+}
 
 if (!post) {
   return Astro.redirect("/404");
 }
 
-const content = await marked.parse(post.content || "");
+const marked = new Marked();
+let content = "";
+try {
+  content = await marked.parse(post.content || "");
+} catch (e) {
+  console.error(`[PostDetail] Error parsing markdown:`, e);
+  content = `<p>Error rendering content.</p>`;
+}
 ---
 
 <BlogPost {...post}>
-  {content && <div set:html={content} />}
+  {content && <div id="article-content" set:html={content} />}
 </BlogPost>
+
+<script>
+  import { createHighlighter } from 'shiki';
+
+  async function highlightCode() {
+    const codeBlocks = document.querySelectorAll('pre code');
+    if (codeBlocks.length === 0) return;
+
+    // Extract unique languages used in the page
+    const langs = new Set(['javascript', 'typescript', 'html', 'css', 'python', 'bash', 'json', 'markdown']);
+    codeBlocks.forEach(block => {
+      const lang = block.className.replace('language-', '');
+      if (lang) langs.add(lang);
+    });
+
+    const highlighter = await createHighlighter({
+      themes: ['github-dark'],
+      langs: Array.from(langs)
+    });
+
+    for (const block of codeBlocks) {
+      const pre = block.parentElement;
+      if (!pre) continue;
+
+      const code = block.textContent || '';
+      const lang = block.className.replace('language-', '') || 'text';
+
+      try {
+        const html = highlighter.codeToHtml(code, {
+          lang,
+          theme: 'github-dark'
+        });
+        pre.outerHTML = html;
+      } catch (e) {
+        console.error('Highlighting failed for block:', e);
+      }
+    }
+  }
+
+  // Run on load
+  highlightCode();
+</script>
+
+<style is:global>
+  /* Optional: smoothing the transition when highlighting applies */
+  pre {
+    background: #0d1117;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow: auto;
+    transition: opacity 0.2s;
+  }
+  .shiki {
+    margin: 0;
+  }
+</style>
