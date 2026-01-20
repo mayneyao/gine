@@ -86,7 +86,28 @@ export async function getPosts(): Promise<EidosPost[]> {
   return mappedPosts;
 }
 
+// Find a specific post by slug and fetch its content
 export async function getPostBySlug(slug: string): Promise<EidosPost | undefined> {
-  const posts = await getPosts();
-  return posts.find((p) => p.slug === slug);
+  // Parallel fetch: markdown (via sanitized ID) and list of metadata
+  const [contentRes, postsMetaRes] = await Promise.allSettled([
+    client.currentSpace.doc.getMarkdown(slug),
+    getPostsMeta()
+  ]);
+
+  if (postsMetaRes.status !== 'fulfilled') {
+    return undefined;
+  }
+
+  // Find the post in the metadata list
+  const postMeta = postsMetaRes.value.find((p) => p.slug === slug);
+  if (!postMeta) {
+    return undefined;
+  }
+
+  const content = contentRes.status === 'fulfilled' ? contentRes.value : "";
+
+  return {
+    ...postMeta,
+    content,
+  };
 }
