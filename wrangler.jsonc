@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gine",
+  "compatibility_date": "2025-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Environment variables - these can be overridden via `wrangler secret put` or in dashboard
+  "vars": {
+    "EIDOS_SERVER_URL": "https://eidos-headless.gine.workers.dev",
+    "EIDOS_TABLE_ID": "b8081728310b49fea0ff1d14e190b3fb"
+  }
+}

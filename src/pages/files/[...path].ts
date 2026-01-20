@@ -9,7 +9,7 @@ export const GET: APIRoute = async ({ params }) => {
 
   // Use an environment variable for the Eidos server base URL
   // Fallback to the one provided in the context if not set
-  const eidosServerUrl = import.meta.env.EIDOS_SERVER_URL || 'http://localhost:3000';
+  const eidosServerUrl = import.meta.env.EIDOS_SERVER_URL || 'https://eidos-headless.gine.workers.dev';
   
   // Construct the target URL
   const targetUrl = new URL(`/files/${path}`, eidosServerUrl);

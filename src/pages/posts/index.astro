@@ -2,9 +2,9 @@
 export const prerender = true;
 import BaseHead from '../../components/BaseHead.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
-import { getPosts } from '../../lib/eidos';
+import { getPostsMeta } from '../../lib/eidos';
 
-const posts = await getPosts();
+const posts = await getPostsMeta();
 
 function formatDate(date: Date | undefined) {
 	if (!date || isNaN(date.getTime())) return '';

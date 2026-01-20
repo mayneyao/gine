@@ -1,9 +1,11 @@
 import { createEidosClient } from "@eidos.space/client";
 
-const TABLE_ID = "b8081728310b49fea0ff1d14e190b3fb";
+// Use environment variables with fallbacks for local development
+const EIDOS_SERVER_URL = import.meta.env.EIDOS_SERVER_URL || "https://eidos-headless.gine.workers.dev";
+const TABLE_ID = import.meta.env.EIDOS_TABLE_ID || "b8081728310b49fea0ff1d14e190b3fb";
 
 const client = createEidosClient({
-  endpoint: "http://localhost:3000/rpc",
+  endpoint: `${EIDOS_SERVER_URL}/rpc`,
 });
 
 export interface EidosPost {
@@ -31,7 +33,8 @@ const columnMap = {
   title: "title",
 } as const;
 
-export async function getPosts(): Promise<EidosPost[]> {
+// Get posts metadata only (without content) - use for listing pages
+export async function getPostsMeta(): Promise<Omit<EidosPost, 'content'>[]> {
   const posts = await client.currentSpace.table(TABLE_ID).findMany({
     where: {
       [columnMap.published]: true,
@@ -42,32 +45,40 @@ export async function getPosts(): Promise<EidosPost[]> {
     },
   });
 
+  return posts.map((post: any) => {
+    const originalId = post._id;
+    const sanitizedId = originalId.replace(/-/g, "");
+    const slug = post[columnMap.slug] || sanitizedId;
+
+    return {
+      _id: sanitizedId,
+      title: post[columnMap.title],
+      pubDate: new Date(post[columnMap.public_date]),
+      description: post[columnMap.description],
+      heroImage: post[columnMap.cover],
+      slug,
+      published: post[columnMap.published],
+      tags: Array.isArray(post[columnMap.tags]) ? post[columnMap.tags] : undefined,
+    };
+  });
+}
+
+// Get posts with full content - use for individual post pages
+export async function getPosts(): Promise<EidosPost[]> {
+  const postsMeta = await getPostsMeta();
+
   const mappedPosts = await Promise.all(
-    posts.map(async (post: any) => {
-      const originalId = post._id;
-      const sanitizedId = originalId.replace(/-/g, "");
-      const slug = post[columnMap.slug] || sanitizedId;
-      
-      // Fetch markdown content using the doc API
+    postsMeta.map(async (post) => {
       let content = "";
       try {
-        content = await client.currentSpace.doc.getMarkdown(sanitizedId);
+        content = await client.currentSpace.doc.getMarkdown(post._id);
       } catch (e) {
-        console.error(`Failed to fetch markdown for ${sanitizedId}:`, e);
-        // Fallback to table column if getMarkdown fails
-        content = post[columnMap.content] || "";
+        console.error(`Failed to fetch markdown for ${post._id}:`, e);
       }
 
       return {
-        _id: sanitizedId,
-        title: post[columnMap.title],
-        pubDate: new Date(post[columnMap.public_date]),
-        description: post[columnMap.description],
-        heroImage: post[columnMap.cover],
+        ...post,
         content,
-        slug,
-        published: post[columnMap.published],
-        tags: Array.isArray(post[columnMap.tags]) ? post[columnMap.tags] : undefined,
       };
     })
   );

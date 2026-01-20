@@ -6,6 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "deploy": "astro build && wrangler pages deploy ./dist",
+    "cf-typegen": "wrangler types",
     "astro": "astro"
   },
   "dependencies": {
@@ -19,5 +21,8 @@
     "marked": "^17.0.1",
     "sharp": "^0.34.3",
     "shiki": "^3.21.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.59.2"
   }
 }
