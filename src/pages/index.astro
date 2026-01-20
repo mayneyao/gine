@@ -1,0 +1,91 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			body {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 100vh;
+				margin: 0;
+				background: #fff;
+			}
+			main {
+				text-align: center;
+				padding: 20px;
+				width: 100%;
+				box-sizing: border-box;
+			}
+			.avatar {
+				width: 48px;
+				height: 48px;
+				border-radius: 4px;
+				margin-bottom: 20px;
+				background: #eee;
+				display: inline-block;
+				overflow: hidden;
+			}
+			.avatar img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+			h1 {
+				font-size: 1.1rem;
+				font-weight: 500;
+				margin: 0 0 20px 0;
+				color: #333;
+			}
+			nav {
+				font-size: 0.9rem;
+				color: #333;
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 8px;
+			}
+			nav a {
+				color: inherit;
+				text-decoration: none;
+			}
+			nav a:hover {
+				text-decoration: underline;
+			}
+			.separator {
+				color: #999;
+			}
+			@media (max-width: 480px) {
+				h1 {
+					font-size: 1rem;
+				}
+				nav {
+					font-size: 0.85rem;
+					gap: 6px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<div class="avatar">
+				<img src="/avatar.png" alt="Avatar" onerror="this.style.display='none'" />
+			</div>
+			<h1>Mayne's Blog</h1>
+			<nav>
+				<a href="/posts">Posts</a>
+				<span class="separator">|</span>
+				<a href="/rss.xml">RSS</a>
+				<span class="separator">|</span>
+				<a href="https://twitter.com/mayneyao" target="_blank">Twitter</a>
+				<span class="separator">|</span>
+				<a href="https://github.com/mayneyao" target="_blank">Github</a>
+			</nav>
+		</main>
+	</body>
+</html>

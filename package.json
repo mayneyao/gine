@@ -1,40 +1,23 @@
 {
   "name": "gine",
-  "version": "0.1.0",
-  "private": true,
+  "type": "module",
+  "version": "0.0.1",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
   "dependencies": {
-    "@notionhq/client": "^2.2.2",
-    "@vercel/og": "^0.5.20",
-    "disqus-react": "^1.1.5",
-    "encoding": "^0.1.13",
-    "feed": "^4.2.2",
-    "markdown-it": "^13.0.1",
-    "markdown-it-anchor": "^8.6.6",
-    "markdown-it-highlightjs": "^4.0.1",
-    "markdown-it-table-of-contents": "^0.6.0",
-    "next": "^14.0.1",
-    "next-themes": "^0.2.1",
-    "notion-to-md": "^2.5.5",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/typography": "^0.5.8",
-    "@types/markdown-it": "^12.2.3",
-    "@types/node": "18.11.9",
-    "@types/react": "18.0.25",
-    "@types/react-dom": "18.0.9",
-    "autoprefixer": "^10.4.13",
-    "eslint": "8.28.0",
-    "eslint-config-next": "13.0.5",
-    "postcss": "^8.4.19",
-    "tailwindcss": "^3.2.4",
-    "typescript": "4.9.3"
+    "@astrojs/cloudflare": "^12.6.12",
+    "@astrojs/mdx": "^4.3.13",
+    "@astrojs/rss": "^4.0.15",
+    "@astrojs/sitemap": "^3.7.0",
+    "@eidos.space/client": "^0.1.0",
+    "astro": "^5.16.11",
+    "aws4fetch": "^1.0.20",
+    "marked": "^17.0.1",
+    "sharp": "^0.34.3",
+    "shiki": "^3.21.0"
   }
 }

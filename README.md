@@ -1,39 +1,62 @@
-> yet another blog powered by Notion & Next.js
+# Astro Starter Kit: Blog
 
-this blog use [Notion](https://www.notion.so/) as a CMS, and [Next.js](https://nextjs.org/) as a static site generator. benefit of this approach is that you can write blog post in Notion, and it will be automatically deployed to [Vercel](https://vercel.com/) as a static site.
+```sh
+npm create astro@latest -- --template blog
+```
 
-Next.js support ISR (Incremental Static Regeneration) which means that you can update your blog post in Notion, and it will be automatically updated in your static site. just deploy once, then forget about it forever.
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-## Basic Data Flow
+Features:
 
-1. get data from Notion's Database via [Notion SDK](https://github.com/makenotion/notion-sdk-js)
-2. transform Notion Blocks to Markdown via [notion-to-md](https://github.com/souvikinator/notion-to-md)
-3. render Markdown to HTML via [remark](https://github.com/remarkjs/remark)
-4. use tailwindcss `prose` to style HTML
+- ✅ Minimal styling (make it your own!)
+- ✅ 100/100 Lighthouse performance
+- ✅ SEO-friendly with canonical URLs and OpenGraph data
+- ✅ Sitemap support
+- ✅ RSS Feed support
+- ✅ Markdown & MDX support
 
-it's very simple, and you can easily customize it to your needs.
+## 🚀 Project Structure
 
-## How to use
+Inside of your Astro project, you'll see the following folders and files:
 
-## Features
+```text
+├── public/
+├── src/
+│   ├── components/
+│   ├── content/
+│   ├── layouts/
+│   └── pages/
+├── astro.config.mjs
+├── README.md
+├── package.json
+└── tsconfig.json
+```
 
-- [x] comment
-- [x] code highlight
-- [x] dark mode
-- [x] toc
-- [x] open graph
-- [ ] SEO optimization
-- [ ] custom post slug
-- [ ] sitemap
-- [x] rss feed
-- [ ] generate post interface from notion database for better type safety
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 
-## FAQ
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
 
-- why not use react-notion-x as a renderer?
-  - i want to try Next.js 13's new feature, react-notion-x is not compatible well with it.
-  - markdown is fine for me
+The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
 
-## Thanks
+Any static assets, like images, can be placed in the `public/` directory.
 
-- [notion-to-md](https://github.com/souvikinator/notion-to-md)
+## 🧞 Commands
+
+All commands are run from the root of the project, from a terminal:
+
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
+
+## 👀 Want to learn more?
+
+Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## Credit
+
+This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).

@@ -1,0 +1,317 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+
+interface Props {
+	title: string;
+	description: string;
+	pubDate: Date;
+	updatedDate?: Date;
+	heroImage?: string;
+	tags?: string[];
+}
+
+const { title, description, pubDate, tags } = Astro.props;
+
+function formatDate(date: any) {
+	if (!date) return '';
+	const d = new Date(date);
+	if (isNaN(d.getTime())) return '';
+	return d.toISOString().split('T')[0];
+}
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<script is:inline>
+			const theme = (() => {
+				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+					return localStorage.getItem('theme');
+				}
+				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+					return 'dark';
+				}
+				return 'light';
+			})();
+		
+			if (theme === 'light') {
+				document.documentElement.setAttribute('data-theme', 'light');
+			} else {
+				document.documentElement.setAttribute('data-theme', 'dark');
+			}
+		</script>
+		<style>
+			body {
+				background: var(--bg);
+				color: var(--text);
+				font-family: 'Atkinson', sans-serif;
+				font-size: 20px;
+				line-height: 1.7;
+			}
+			main {
+				max-width: 800px;
+				margin: 0 auto;
+				padding: 40px 20px;
+				position: relative;
+			}
+			.header {
+				max-width: 800px;
+				margin: 0 auto;
+				padding: 30px 20px 0 20px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				box-sizing: border-box;
+			}
+			.back-link {
+				color: var(--text);
+				text-decoration: none;
+				font-size: 18px;
+			}
+			.emoji-toggle {
+				background: none;
+				border: none;
+				cursor: pointer;
+				padding: 0;
+				font-size: 24px;
+				line-height: 1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				transition: transform 0.2s;
+				color: var(--text);
+			}
+			.emoji-toggle:hover {
+				transform: scale(1.1);
+			}
+			article {
+				min-width: 0;
+			}
+			.post-title {
+				font-size: 3.052em;
+				font-weight: 700;
+				margin: 0 0 0.5rem 0;
+				line-height: 1.2;
+				color: rgb(var(--black));
+			}
+			.post-meta {
+				display: flex;
+				gap: 16px;
+				color: rgb(var(--gray));
+				font-family: monospace;
+				font-size: 16px;
+				margin-bottom: 40px;
+			}
+			.tag {
+				text-decoration: none;
+				color: inherit;
+			}
+			.sidebar {
+				font-size: 14px;
+				color: #60739f;
+				position: fixed;
+				top: 180px;
+				left: calc(50% + 440px);
+				width: 240px;
+				height: fit-content;
+				opacity: 1;
+				transition: opacity 0.2s;
+				pointer-events: auto;
+			}
+			.sidebar.hidden {
+				opacity: 0;
+				pointer-events: none;
+			}
+			.sidebar :global(ul) {
+				list-style-type: none;
+				padding: 0;
+				margin: 0;
+			}
+			.sidebar :global(li) {
+				margin-bottom: 12px;
+				line-height: 1.4;
+			}
+			.sidebar :global(li.toc-h3) {
+				padding-left: 1.25em;
+				font-size: 0.95em;
+			}
+			.sidebar :global(li.toc-h4) {
+				padding-left: 2.5em;
+				font-size: 0.9em;
+			}
+			.sidebar :global(a) {
+				color: #60739f !important;
+				text-decoration: none;
+				border-bottom: 1px solid transparent;
+			}
+			.sidebar :global(a:hover) {
+				border-bottom-color: #60739f;
+			}
+			.content :global(h2) {
+				font-size: 2.441em;
+				margin: 1.5em 0 0.5em 0;
+				color: rgb(var(--black));
+			}
+			.content :global(p) {
+				margin-bottom: 1.5em;
+				line-height: 1.7;
+			}
+			.content :global(code) {
+				background: rgb(var(--gray-light));
+				padding: 2px 5px;
+				border-radius: 2px;
+				font-size: 0.9em;
+			}
+			.content :global(pre) {
+				padding: 1.5em;
+				border-radius: 8px;
+				overflow-x: auto;
+				margin-bottom: 2em;
+				font-size: 16px;
+				line-height: 1.5;
+			}
+			.content :global(pre code) {
+				background: transparent !important;
+				padding: 0 !important;
+				border-radius: 0 !important;
+				font-size: inherit;
+				color: inherit;
+				font-family: inherit;
+			}
+			.content :global(.shiki) {
+				background-color: #0d1117 !important; /* Force github-dark bg if needed, or leave to shiki */
+			}
+			@media (max-width: 900px) {
+				.sidebar {
+					display: none;
+				}
+				.post-title {
+					font-size: 2em;
+				}
+				main {
+					padding: 20px 16px;
+				}
+				.header {
+					padding: 20px 16px 0 16px;
+				}
+			}
+			@media (max-width: 480px) {
+				.post-title {
+					font-size: 1.6em;
+				}
+				.post-meta {
+					font-size: 14px;
+					margin-bottom: 30px;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="header">
+			<a href="/posts" class="back-link">👈back</a>
+			<button id="theme-toggle" class="emoji-toggle" aria-label="Toggle theme">
+				<span id="theme-emoji">😉</span>
+			</button>
+		</div>
+		<main>
+			<article>
+				<h1 class="post-title">{title}</h1>
+				<div class="post-meta">
+					<span>{formatDate(pubDate)}</span>
+					{tags?.map((tag) => <span class="tag">#{tag}</span>)}
+				</div>
+				<div class="content">
+					<slot />
+				</div>
+			</article>
+			<aside class="sidebar" id="sidebar">
+				<div id="toc"></div>
+			</aside>
+		</main>
+		<script>
+			// Simple TOC generator and Overlap detection
+			const content = document.querySelector('.content');
+			const toc = document.getElementById('toc');
+			const sidebar = document.getElementById('sidebar');
+			
+			if (content && toc && sidebar) {
+				const headings = content.querySelectorAll('h2, h3, h4');
+				if (headings.length > 0) {
+					toc.innerHTML = '';
+					const ul = document.createElement('ul');
+					
+					const slugify = (text: string) => {
+						return text.trim()
+							.toLowerCase()
+							.replace(/\s+/g, '-')
+							.replace(/[^\w\u4e00-\u9fa5-]/g, '');
+					};
+
+					headings.forEach((heading, i) => {
+						const rawText = heading.textContent.trim();
+						let id = slugify(rawText);
+						
+						// Ensure unique ID
+						if (document.getElementById(id)) {
+							id = `${id}-${i}`;
+						}
+						
+						heading.id = id;
+						const li = document.createElement('li');
+						li.className = `toc-${heading.tagName.toLowerCase()}`;
+						
+						const a = document.createElement('a');
+						a.href = `#${id}`;
+						a.textContent = rawText;
+						
+						li.appendChild(a);
+						ul.appendChild(li);
+					});
+					toc.appendChild(ul);
+
+					// Overlap detection
+					const checkOverlap = () => {
+						const articleRect = content.getBoundingClientRect();
+						const sidebarRect = sidebar.getBoundingClientRect();
+						
+						// Add some buffer (40px)
+						if (sidebarRect.left < articleRect.right + 40) {
+							sidebar.classList.add('hidden');
+						} else {
+							sidebar.classList.remove('hidden');
+						}
+					};
+
+					window.addEventListener('resize', checkOverlap);
+					checkOverlap();
+				} else {
+					sidebar.style.display = 'none';
+				}
+			}
+
+			// Theme toggle logic
+			const themeToggle = document.getElementById('theme-toggle');
+			const themeEmoji = document.getElementById('theme-emoji');
+
+			const updateEmoji = (theme: string | null) => {
+				if (themeEmoji) {
+					themeEmoji.textContent = theme === 'dark' ? '🌙' : '☀️';
+				}
+			};
+
+			// Initialize emoji
+			updateEmoji(document.documentElement.getAttribute('data-theme'));
+
+			themeToggle?.addEventListener('click', () => {
+				const currentTheme = document.documentElement.getAttribute('data-theme');
+				const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+				
+				document.documentElement.setAttribute('data-theme', newTheme);
+				localStorage.setItem('theme', newTheme);
+				updateEmoji(newTheme);
+			});
+		</script>
+	</body>
+</html>

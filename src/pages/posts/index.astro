@@ -1,0 +1,118 @@
+---
+export const prerender = true;
+import BaseHead from '../../components/BaseHead.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { getPosts } from '../../lib/eidos';
+
+const posts = await getPosts();
+
+function formatDate(date: Date | undefined) {
+	if (!date || isNaN(date.getTime())) return '';
+	return date.toISOString().split('T')[0];
+}
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			body {
+				background: #fff;
+			}
+			main {
+				max-width: 800px;
+				margin: 0 auto;
+				padding: 40px 20px;
+			}
+			.header {
+				max-width: 800px;
+				margin: 0 auto;
+				padding: 30px 20px 0 20px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+			.back-link {
+				color: #333;
+				text-decoration: none;
+				font-size: 18px;
+			}
+			.emoji {
+				font-size: 24px;
+			}
+			ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			li {
+				margin-bottom: 24px;
+				display: flex;
+				align-items: baseline;
+			}
+			.date {
+				color: #999;
+				font-family: monospace;
+				width: 120px;
+				flex-shrink: 0;
+				margin-right: 20px;
+				font-size: 1rem;
+			}
+			.title {
+				color: #333;
+				text-decoration: none;
+				font-size: 1.1rem;
+				font-weight: 500;
+				border-bottom: 1.5px solid #333;
+				padding-bottom: 1px;
+			}
+			.title:hover {
+				color: #666;
+				border-color: #666;
+			}
+			@media (max-width: 600px) {
+				main {
+					padding: 30px 16px;
+				}
+				.header {
+					padding: 30px 16px 0 16px;
+				}
+				li {
+					flex-direction: column;
+					gap: 4px;
+				}
+				.date {
+					width: auto;
+					margin-right: 0;
+					font-size: 0.85rem;
+				}
+				.title {
+					font-size: 1rem;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<a href="/" class="back-link">👈back</a>
+			<span class="emoji">😉</span>
+		</div>
+		<main>
+			<section>
+				<ul>
+					{
+						posts.map((post) => (
+							<li>
+								<span class="date">{formatDate(post.pubDate)}</span>
+								<a href={`/posts/${post.slug}/`} class="title">
+									{post.title}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+		</main>
+	</body>
+</html>
