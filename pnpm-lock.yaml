@@ -21,8 +21,8 @@ importers:
         specifier: ^3.7.0
         version: 3.7.0
       '@eidos.space/client':
-        specifier: ^0.1.0
-        version: 0.1.0(zod@3.25.76)
+        specifier: ^0.3.0
+        version: 0.3.0(zod@3.25.76)
       astro:
         specifier: ^5.16.11
         version: 5.16.11(aws4fetch@1.0.20)(rollup@4.55.2)(typescript@5.9.3)
@@ -196,8 +196,8 @@ packages:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
 
-  '@eidos.space/client@0.1.0':
-    resolution: {integrity: sha512-BpGZWw3uvUMbERPkvwXjEmWuUyECo3/zQAvfpS7RcWE0aI9IQcKy+PUkItjF/yQJaLVU4NFkab9T/3yDj+ccEw==}
+  '@eidos.space/client@0.3.0':
+    resolution: {integrity: sha512-ZDjiIb0UPS88uvBp1muFdAX8vIJguwSIVEGCcERDU50JxqGHMYR119gd5kYPag86TcNYotfzkP0906ZAPcUoEQ==}
     peerDependencies:
       react: '>=18.0.0'
     peerDependenciesMeta:
@@ -2621,7 +2621,7 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@eidos.space/client@0.1.0(zod@3.25.76)':
+  '@eidos.space/client@0.3.0(zod@3.25.76)':
     dependencies:
       '@eidos.space/core': 0.28.0(zod@3.25.76)
     transitivePeerDependencies:

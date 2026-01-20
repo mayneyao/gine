@@ -1,11 +1,15 @@
 import { createEidosClient } from "@eidos.space/client";
 
 // Use environment variables with fallbacks for local development
-const EIDOS_SERVER_URL = import.meta.env.EIDOS_SERVER_URL || "https://eidos-headless.gine.workers.dev";
-const TABLE_ID = import.meta.env.EIDOS_TABLE_ID || "b8081728310b49fea0ff1d14e190b3fb";
+const EIDOS_SERVER_URL =
+  import.meta.env.EIDOS_SERVER_URL || "https://eidos-headless.gine.workers.dev";
+const TABLE_ID =
+  import.meta.env.EIDOS_TABLE_ID || "b8081728310b49fea0ff1d14e190b3fb";
+const API_KEY = import.meta.env.EIDOS_API_KEY || "";
 
 const client = createEidosClient({
   endpoint: `${EIDOS_SERVER_URL}/rpc`,
+  apiKey: API_KEY,
 });
 
 export interface EidosPost {
@@ -34,7 +38,7 @@ const columnMap = {
 } as const;
 
 // Get posts metadata only (without content) - use for listing pages
-export async function getPostsMeta(): Promise<Omit<EidosPost, 'content'>[]> {
+export async function getPostsMeta(): Promise<Omit<EidosPost, "content">[]> {
   const posts = await client.currentSpace.table(TABLE_ID).findMany({
     where: {
       [columnMap.published]: true,
@@ -58,7 +62,9 @@ export async function getPostsMeta(): Promise<Omit<EidosPost, 'content'>[]> {
       heroImage: post[columnMap.cover],
       slug,
       published: post[columnMap.published],
-      tags: Array.isArray(post[columnMap.tags]) ? post[columnMap.tags] : undefined,
+      tags: Array.isArray(post[columnMap.tags])
+        ? post[columnMap.tags]
+        : undefined,
     };
   });
 }
@@ -80,38 +86,48 @@ export async function getPosts(): Promise<EidosPost[]> {
         ...post,
         content,
       };
-    })
+    }),
   );
 
   return mappedPosts;
 }
 
 // Find a specific post by slug and fetch its content
-export async function getPostBySlug(slug: string): Promise<EidosPost | undefined> {
+export async function getPostBySlug(
+  slug: string,
+): Promise<EidosPost | undefined> {
   console.log(`[getPostBySlug] Fetching for slug: ${slug}`);
   // Parallel fetch: markdown (via sanitized ID) and list of metadata
   const [contentRes, postsMetaRes] = await Promise.allSettled([
     client.currentSpace.doc.getMarkdown(slug),
-    getPostsMeta()
+    getPostsMeta(),
   ]);
 
-  if (postsMetaRes.status !== 'fulfilled') {
-    console.error(`[getPostBySlug] Failed to fetch metadata list:`, postsMetaRes.reason);
+  if (postsMetaRes.status !== "fulfilled") {
+    console.error(
+      `[getPostBySlug] Failed to fetch metadata list:`,
+      postsMetaRes.reason,
+    );
     return undefined;
   }
 
   // Find the post in the metadata list
   const postMeta = postsMetaRes.value.find((p) => p.slug === slug);
   if (!postMeta) {
-    console.warn(`[getPostBySlug] Post not found in metadata list for slug: ${slug}`);
+    console.warn(
+      `[getPostBySlug] Post not found in metadata list for slug: ${slug}`,
+    );
     return undefined;
   }
 
-  if (contentRes.status === 'rejected') {
-    console.error(`[getPostBySlug] Failed to fetch markdown for ${slug}:`, contentRes.reason);
+  if (contentRes.status === "rejected") {
+    console.error(
+      `[getPostBySlug] Failed to fetch markdown for ${slug}:`,
+      contentRes.reason,
+    );
   }
 
-  const content = contentRes.status === 'fulfilled' ? contentRes.value : "";
+  const content = contentRes.status === "fulfilled" ? contentRes.value : "";
 
   return {
     ...postMeta,

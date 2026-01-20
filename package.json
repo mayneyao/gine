@@ -15,7 +15,7 @@
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "^3.7.0",
-    "@eidos.space/client": "^0.1.0",
+    "@eidos.space/client": "^0.3.0",
     "astro": "^5.16.11",
     "aws4fetch": "^1.0.20",
     "marked": "^17.0.1",
